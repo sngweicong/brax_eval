@@ -13,14 +13,14 @@ and still have a low associated standard error.
 Caveat is that one needs to edit the TuRBO files from where one pip-installed from (files included in this repo).
 
 
-Tested under:\
-$ pip freeze | grep 'jax\|brax\|gym\|numpy\|flax\|turbo'\
--e git+https://github.com/google/brax.git@f0de0e56126b7cd7cdf941f0fc02f3480a02716a#egg=brax\
-flax==0.6.4\
-gym==0.23.0\
-gym-notices==0.0.8\
-jax==0.3.25\
-jaxlib==0.3.25+cuda11.cudnn82\
-jaxopt==0.6\
-numpy==1.23.5\
--e git+https://github.com/uber-research/TuRBO.git@de0db39f481d9505bb3610b7b7aa0ebf7702e4a5#egg=turbo\
+Tested under: \
+$ pip freeze | grep 'jax\|brax\|gym\|numpy\|flax\|turbo' \
+-e git+https://github.com/google/brax.git@f0de0e56126b7cd7cdf941f0fc02f3480a02716a#egg=brax \
+flax==0.6.4 \
+gym==0.23.0 \
+gym-notices==0.0.8 \
+jax==0.3.25 \
+jaxlib==0.3.25+cuda11.cudnn82 \
+jaxopt==0.6 \
+numpy==1.23.5 \
+-e git+https://github.com/uber-research/TuRBO.git@de0db39f481d9505bb3610b7b7aa0ebf7702e4a5#egg=turbo \
