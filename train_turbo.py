@@ -44,6 +44,7 @@ turbo1 = Turbo1(
     min_cuda=1024,  # Run on the CPU for small datasets
     device="cpu",  # "cpu" or "cuda"
     dtype="float64",  # float64 or float32
+    seed=np.random.randint(1e6)
 )
 
 turbo1.optimize()
