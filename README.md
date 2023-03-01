@@ -12,6 +12,7 @@ and it may be beneficial to want to evaluate batches of 2^3 where each x will ha
 and still have a low associated standard error.
 Caveat is that one needs to edit the TuRBO files from where one pip-installed from (files included in this repo).
 
+load_eval_render.ipynb loads the saved npy file from train_turbo.py or train_turbo_batch.py and renders within a jupyter notebook.
 
 Tested under: \
 $ pip freeze | grep 'jax\|brax\|gym\|numpy\|flax\|turbo' \
@@ -24,3 +25,5 @@ jaxlib==0.3.25+cuda11.cudnn82 \
 jaxopt==0.6 \
 numpy==1.23.5 \
 -e git+https://github.com/uber-research/TuRBO.git@de0db39f481d9505bb3610b7b7aa0ebf7702e4a5#egg=turbo \
+
+pip_freeze.txt in case requirements provided above somehow does not work.

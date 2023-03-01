@@ -51,6 +51,6 @@ turbo1b.optimize()
 
 ind_best = np.argmin(turbo1b.fX)
 x_best = turbo1b.X[ind_best, :]
-with open('best.npy', 'wb') as f:
+with open('best_'+env+'_'+str(arch1)+'_'+str(arch2)+'.npy', 'wb') as f:
     np.save(f, x_best)
 
