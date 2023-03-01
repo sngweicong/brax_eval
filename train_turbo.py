@@ -49,3 +49,8 @@ turbo1 = Turbo1(
 
 turbo1.optimize()
 
+ind_best = np.argmin(turbo1.fX)
+x_best = turbo1.X[ind_best, :]
+with open('best.npy', 'wb') as f:
+    np.save(f, x_best)
+
