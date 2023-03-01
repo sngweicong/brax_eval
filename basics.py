@@ -6,7 +6,7 @@ You need to provide:
 4. the x that is to be evaluated, in the form of a numpy array with dimensions implied by the MLP architecture, in the swimmer case 222.
 5. batch size, if you want to evaluate a batch of x's.
 
-$ python simple.py
+$ python basics.py
 Expected output:
 Environment is "swimmer"
 Architecture is [8, 10, 10, 2], resultant x dimension: 222
