@@ -31,7 +31,7 @@ brx_env = BraxCaller(env, arch1, arch2, nenv, batch_size, seed)
 D = arch1*(brx_env.env.observation_space.shape[1]+1) + (arch1+1) * arch2 +  (arch2+1) * brx_env.env.action_space.shape[1]
 
 turbo1 = Turbo1(
-    f=brx_env.single_numpy_eval,  # Handle to objective function
+    f=-brx_env.single_numpy_eval,  # Handle to objective function, NEGATIVE BECAUSE WE TYPICALLY WANT TO MAXIMIZE RETURNS IN RL
     lb=-np.ones(D),  # Numpy array specifying lower bounds
     ub=np.ones(D),  # Numpy array specifying upper bounds
     n_init = 512,  # Number of initial bounds from an Latin hypercube design
