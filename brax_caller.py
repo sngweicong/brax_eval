@@ -229,7 +229,7 @@ class BraxCaller():
     def batched_numpy_eval(self, batched_numpy_x):
         batched_fdict = [self.dict_builder(x) for x in batched_numpy_x]
         f_Xs = self.evaluate_multiple_x_on_all_envs(batched_fdict)
-        f_X = -f_X if self.max_or_min == "min" else f_X  #NEGATIVE BECAUSE WE TYPICALLY WANT TO MAXIMIZE RETURNS IN RL BUT SOME DOMAINS ARE FOCUSED ON MINIMIZING
+        f_Xs = -f_Xs if self.max_or_min == "min" else f_Xs  #NEGATIVE BECAUSE WE TYPICALLY WANT TO MAXIMIZE RETURNS IN RL BUT SOME DOMAINS ARE FOCUSED ON MINIMIZING
         return f_Xs
     
     def fix1ksteps_single_numpy_eval(self, numpy_x):
