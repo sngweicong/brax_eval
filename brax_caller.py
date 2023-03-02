@@ -4,7 +4,7 @@ since we want the environments to rollout for a fixed 1000 steps instead of term
 '''
 
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+os.environ['CUDA_VISIBLE_DEVICES'] = '1'
 #os.environ['XLA_PYTHON_CLIENT_PREALLOCATE']='false'
 os.environ['XLA_PYTHON_CLIENT_MEM_FRACTION']='.5'
 
@@ -34,7 +34,7 @@ class Actor(nn.Module):
         return x
 
 class BraxCaller():
-    def __init__(self, env_name, arch1, arch2, nenv, batch_size, seed):
+    def __init__(self, env_name, arch1, arch2, nenv, batch_size, max_or_min, seed):
         self.seed = seed
         np.random.seed(self.seed)
         self.key = jax.random.PRNGKey(self.seed)
@@ -43,6 +43,7 @@ class BraxCaller():
         self.env_name = env_name 
         self.nenv = nenv
         self.batch_size = batch_size
+        self.max_or_min = max_or_min
         self.make_env()
         self.architecture = [self.env.observation_space.shape[1], arch1, arch2, self.env.action_space.shape[1]] 
         self.D = arch1*(self.env.observation_space.shape[1]+1) + (arch1+1) * arch2 +  (arch2+1) * self.env.action_space.shape[1]
@@ -222,11 +223,13 @@ class BraxCaller():
         #converted_params = dict_unbuilder(fdict, architecture)
         #print("DELTA CHECK", og_params - converted_params) #check for loopclosure
         f_X = self.evaluate_single_x_on_all_envs(fdict)
+        f_X = -f_X if self.max_or_min == "min" else f_X  #NEGATIVE BECAUSE WE TYPICALLY WANT TO MAXIMIZE RETURNS IN RL BUT SOME DOMAINS ARE FOCUSED ON MINIMIZING
         return f_X
 
     def batched_numpy_eval(self, batched_numpy_x):
         batched_fdict = [self.dict_builder(x) for x in batched_numpy_x]
         f_Xs = self.evaluate_multiple_x_on_all_envs(batched_fdict)
+        f_X = -f_X if self.max_or_min == "min" else f_X  #NEGATIVE BECAUSE WE TYPICALLY WANT TO MAXIMIZE RETURNS IN RL BUT SOME DOMAINS ARE FOCUSED ON MINIMIZING
         return f_Xs
     
     def fix1ksteps_single_numpy_eval(self, numpy_x):
