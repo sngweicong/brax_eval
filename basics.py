@@ -5,6 +5,7 @@ You need to provide:
 3. nenv: Number of parallel brax environments
 4. the x that is to be evaluated, in the form of a numpy array with dimensions implied by the MLP architecture, in the swimmer case 222.
 5. batch size, if you want to evaluate a batch of x's.
+6. max_or_min, whether your optimizer is doing minimizing or maximizing objective.
 
 $ python basics.py
 Expected output:
@@ -33,14 +34,15 @@ parser.add_argument("--batch-size", type=int, default=8) #turbo batch size
 args = parser.parse_args()
 '''
 
-env = "swimmer"
+env = "halfcheetah"
 seed = 11
 arch1 = 10
 arch2 = 10
 nenv = 32768
 batch_size = 8
+max_or_min = "min"
 
-brx_env = BraxCaller(env, arch1, arch2, nenv, batch_size, seed)
+brx_env = BraxCaller(env, arch1, arch2, nenv, batch_size, max_or_min, seed)
 D = arch1*(brx_env.env.observation_space.shape[1]+1) + (arch1+1) * arch2 +  (arch2+1) * brx_env.env.action_space.shape[1]
 
 ctime = time.time()
