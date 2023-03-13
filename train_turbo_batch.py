@@ -20,11 +20,11 @@ parser.add_argument("--batch-size", type=int, default=8) #turbo batch size
 args = parser.parse_args()
 '''
 
-env = "inverted_double_pendulum"
+env = "swimmer"
 seed = np.random.randint(1e6)
 arch1 = 10
 arch2 = 10
-nenv = 32768
+nenv = 2048
 batch_size = 8
 max_or_min = "min"
 

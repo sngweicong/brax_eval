@@ -183,6 +183,8 @@ class BraxCaller():
             if all(cumu_done):
                 break
         mu_returns = jnp.mean(cumulative_return.reshape(self.batch_size, self.nenv//self.batch_size), axis=1)
+        #print("MEAN", jnp.mean(cumulative_return.reshape(self.batch_size, self.nenv//self.batch_size), axis=1))
+        #print("MAXX", jnp.max(cumulative_return.reshape(self.batch_size, self.nenv//self.batch_size), axis=1))
         return mu_returns
     
     def fix1ksteps_evaluate_single_x_on_all_envs(self, fdict):
@@ -237,10 +239,12 @@ class BraxCaller():
         #converted_params = dict_unbuilder(fdict, architecture)
         #print("DELTA CHECK", og_params - converted_params) #check for loopclosure
         f_X = self.fix1ksteps_evaluate_single_x_on_all_envs(fdict)
+        f_X = -f_X if self.max_or_min == "min" else f_X
         return f_X
 
     def fix1ksteps_batched_numpy_eval(self, batched_numpy_x):
         batched_fdict = [self.dict_builder(x) for x in batched_numpy_x]
         f_Xs = self.fix1ksteps_evaluate_multiple_x_on_all_envs(batched_fdict)
+        f_Xs = -f_Xs if self.max_or_min == "min" else f_Xs
         return f_Xs
 
