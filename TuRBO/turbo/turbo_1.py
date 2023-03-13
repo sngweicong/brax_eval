@@ -258,7 +258,12 @@ class Turbo1:
             X_init = latin_hypercube(self.n_init, self.dim)
             X_init = from_unit_cube(X_init, self.lb, self.ub)
             f_start = time.time()
-            fX_init = np.array([[self.f(x)] for x in X_init])
+            fX_init = np.array([]).reshape(0,1)
+            for i in range(self.n_init):
+                fX_init_single = np.array(self.f(X_init[i,:])).reshape(1,1) # change
+                fX_init = np.concatenate((fX_init,fX_init_single),axis=0)
+                if i % 20 == 0:
+                    print(f"Initialized {i} points!")
             f_end = time.time()
 
             # Update budget and set as initial data for this TR

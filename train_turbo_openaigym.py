@@ -1,10 +1,10 @@
 '''
-Illustrates how easy it is to integrate with TuRBO directly.
+Vanilla OpenAI Gym.
 '''
 
 
 from turbo import Turbo1
-from brax_caller import BraxCaller
+from gym_caller import GymCaller
 import numpy as np
 import time
 
@@ -20,22 +20,22 @@ parser.add_argument("--batch-size", type=int, default=8) #turbo batch size
 args = parser.parse_args()
 '''
 
-env = "swimmer"
+env = "Swimmer-v2"
 seed = np.random.randint(1e6)
 arch1 = 10
 arch2 = 10
-nenv = 2048
+nenv = 32
 batch_size = 8
 max_or_min = "min"
 n_trials = 5
 
 for i in range(n_trials):
     seed = np.random.randint(1e6)
-    brx_env = BraxCaller(env, arch1, arch2, nenv, batch_size, max_or_min, seed)
-    D = arch1*(brx_env.env.observation_space.shape[1]+1) + (arch1+1) * arch2 +  (arch2+1) * brx_env.env.action_space.shape[1]
+    gym_env = GymCaller(env, arch1, arch2, nenv, batch_size, max_or_min, seed)
+    D = arch1*(gym_env.env.observation_space.shape[1]+1) + (arch1+1) * arch2 +  (arch2+1) * gym_env.env.action_space.shape[1]
 
     turbo1 = Turbo1(
-        f=brx_env.single_numpy_eval,  # Handle to objective function
+        f=gym_env.single_numpy_eval,  # Handle to objective function
         lb=-np.ones(D),  # Numpy array specifying lower bounds
         ub=np.ones(D),  # Numpy array specifying upper bounds
         n_init = 512,  # Number of initial bounds from an Latin hypercube design

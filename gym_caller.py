@@ -33,7 +33,7 @@ class Actor(nn.Module):
         #x = x * self.action_scale + self.action_bias
         return x
 
-class BraxCaller():
+class GymCaller():
     def __init__(self, env_name, arch1, arch2, nenv, batch_size, max_or_min, seed):
         self.seed = seed
         np.random.seed(self.seed)
@@ -105,48 +105,8 @@ class BraxCaller():
         return flat_array
         
     def make_env(self):
-        '''
-        env_name must be from:
-            _envs = {
-            'acrobot': acrobot.Acrobot,
-            'ant': functools.partial(ant.Ant, use_contact_forces=True),
-            'fast': fast.Fast,
-            'fetch': fetch.Fetch,
-            'grasp': grasp.Grasp,
-            'halfcheetah': half_cheetah.Halfcheetah,
-            'hopper': hopper.Hopper,
-            'humanoid': humanoid.Humanoid,
-            'humanoidstandup': humanoid_standup.HumanoidStandup,
-            'inverted_pendulum': inverted_pendulum.InvertedPendulum,
-            'inverted_double_pendulum': inverted_double_pendulum.InvertedDoublePendulum,
-            'pusher': pusher.Pusher,
-            'reacher': reacher.Reacher,
-            'reacherangle': reacherangle.ReacherAngle,
-            'swimmer': swimmer.Swimmer,
-            'ur5e': ur5e.Ur5e,
-            'walker2d': walker2d.Walker2d,
-        }
-        '''
-        env_id = "brax-"+self.env_name+"-v0"
-        entry_point = functools.partial(envs.create_gym_env, self.env_name)
-        if env_id not in gym.envs.registry.env_specs:
-            gym.register(env_id, entry_point=entry_point)
-
         # create a gym environment that contains n parallel environments
-        self.env = gym.make(env_id, batch_size=self.nenv)
-
-        # wrap it to interoperate with torch data structures
-        #gym_env = to_torch.JaxToTorchWrapper(gym_env, device='cuda')
-
-        # jit compile
-        self.env.reset()
-        for _ in range(2):
-            action = jax.random.uniform(jax.random.PRNGKey(758493),shape = self.env.action_space.shape)
-            self.env.step(action)
-        
-        #obs = self.env.reset()
-        #params=self.actor.init(self.actor_key, obs)
-        #print(jax.tree_util.tree_map(lambda x: x.shape, params))# Checking output shapes
+        self.env = gym.vector.make(self.env_name, num_envs=self.nenv, asynchronous=False)
 
     def evaluate_single_x_on_all_envs(self, fdict):
         cumulative_return = jnp.zeros(self.nenv)
