@@ -141,7 +141,7 @@ class BraxCaller():
         # jit compile
         self.env.reset()
         for _ in range(2):
-            action = jax.random.uniform(jax.random.PRNGKey(758493),shape = self.env.action_space.shape)
+            action = jax.random.uniform(self.key,shape = self.env.action_space.shape)
             self.env.step(action)
         
         #obs = self.env.reset()
@@ -151,6 +151,7 @@ class BraxCaller():
     def evaluate_single_x_on_all_envs(self, fdict):
         cumulative_return = jnp.zeros(self.nenv)
         cumu_done = jnp.full(self.nenv,False)
+        self.env.seed(np.random.randint(1e9))
         obs = self.env.reset()
         for iter in range(999999):
             actions = self.actor.apply(fdict, obs)
@@ -167,6 +168,7 @@ class BraxCaller():
     def evaluate_multiple_x_on_all_envs(self, batched_fdict):
         cumulative_return = jnp.zeros(self.nenv)
         cumu_done = jnp.full(self.nenv,False)
+        self.env.seed(np.random.randint(1e9))
         obs = self.env.reset() 
         for iter in range(999999):
             all_actions=jnp.array([]).reshape(0,self.env.action_space.shape[1])
