@@ -34,7 +34,7 @@ parser.add_argument("--batch-size", type=int, default=8) #turbo batch size
 args = parser.parse_args()
 '''
 
-env = "halfcheetah"
+env = "inverted_double_pendulum" #"halfcheetah"
 seed = 11
 arch1 = 10
 arch2 = 10
@@ -48,6 +48,11 @@ D = arch1*(brx_env.env.observation_space.shape[1]+1) + (arch1+1) * arch2 +  (arc
 ctime = time.time()
 f_X = brx_env.fix1ksteps_single_numpy_eval(np.random.rand(D))
 print(f'f_X is {f_X},') 
+print(f'single f_X across {nenv} envs computed in {time.time()-ctime} seconds.')
+
+ctime = time.time()
+f_X = brx_env.single_numpy_eval(np.load("best_inverted_double_pendulum_10_10_8911.npy")) #"best_halfcheetah_10_10_5751.npy"
+print(f'(Good policy) f_X is {f_X},') 
 print(f'single f_X across {nenv} envs computed in {time.time()-ctime} seconds.')
 
 ctime = time.time()
